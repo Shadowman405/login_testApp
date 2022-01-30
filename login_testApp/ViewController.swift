@@ -14,19 +14,21 @@ class ViewController: UIViewController, LoginButtonDelegate {
         super.viewDidLoad()
         if let token = AccessToken.current, !token.isExpired {
             let token = token.tokenString
-            
+
             let reuqest = FBSDKLoginKit.GraphRequest(graphPath: "me",
                                                      parameters: ["fields":"email, name"],
                                                      tokenString: token, version: nil,
                                                      httpMethod: .get)
-            
+
             reuqest.start(completion: {connection,results,error in
-                print("\(results)")
+                print("\(String(describing: results))")
             })
         } else {
             let loginButton = FBLoginButton()
             loginButton.delegate = self
-            loginButton.permissions = ["public_profile", "email, name"]
+            loginButton.permissions = ["public_profile", "email"]
+            loginButton.frame = CGRect(x: 32, y: 320, width: view.frame.width - 64, height: 50)
+            
             view.addSubview(loginButton)
         }
         
@@ -41,7 +43,7 @@ class ViewController: UIViewController, LoginButtonDelegate {
                                                  httpMethod: .get)
         
         reuqest.start(completion: {connection,results,error in
-            print("\(results)")
+            print("\(String(describing: results))")
         })
     }
     
